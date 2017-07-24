@@ -1,0 +1,26 @@
+{
+  "name": "flashcard_maker",
+  "version": "1.0.0",
+  "description": "Flash cards for user generated questions and answers",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daj757/flashcard-Maker.git"
+  },
+  "keywords": [
+    "flash",
+    "card"
+  ],
+  "author": "Daniel Jimenez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daj757/flashcard-Maker/issues"
+  },
+  "homepage": "https://github.com/daj757/flashcard-Maker#readme",
+  "dependencies": {
+    "inquirer": "^3.2.1"
+  }
+}
