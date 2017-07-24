@@ -46,8 +46,16 @@ var questions = function(){
 		}
 	
 questions();
+
 var createCards = function(){
 	if(numberOfCards !== 0){
+		cardMaker(); 
+		}
+		else{
+		 trivia();
+		}
+	}
+function cardMaker(){
 	inquirer.prompt([{
 			type: 'list',
 	      	choices: ['Basic Card', 'Cloze Card'],
@@ -64,7 +72,10 @@ var createCards = function(){
 					console.log('You chose to create a close card.');
 					cloze()
 				}
-		function basic(){
+});
+		}
+
+function basic(){
           inquirer.prompt([
           {
           	  type: 'input',
@@ -83,40 +94,40 @@ var createCards = function(){
             	cardArray.push(newCard);
             	console.log(cardArray);
             	createCards();
-				})
+				});
 				numberOfCards--;
-				
-				
-
 }
 
-
-});
-
 		
-		}
 		function cloze(){
           inquirer.prompt([
           {
           	  type: 'input',
               name: 'front',
-              message: 'Please enter a full sentence that includes answer and question.\n Ex. George Washington was the first president.'
+              message: 'Please enter a full sentence that includes answer and question.\r\n Ex. George Washington was the first president.\r\n',
+        
           },
           {
           	  type: 'input',
               name: 'back',
-              message: 'Please enter your cloze answer portion.\n Ex. George Washington.'
+              message: 'Please enter your cloze answer portion.\r\n Ex. George Washington.\r\n',
+
           }
 
             ]).then(function(clozeAnswers){
             	var clozeCard = new ClozeCard(clozeAnswers.front, clozeAnswers.back);
+            	clozeCard.partial = clozeAnswers.front.replace(clozeAnswers.back, " ... ");
+            	console.log(clozeCard.partial);
             	console.log(clozeCard);
             	cardArray.push(clozeCard);
             	console.log(cardArray);
             	createCards();
-				})
+				});
 				numberOfCards--;
 				
 			}
+	
 
+function trivia(){
+	console.log("triva begins")
 }
