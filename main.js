@@ -1,10 +1,26 @@
 var inquirer = require("inquirer");
 var NewCard = require('./BasicCard.js');
 var ClozeCard = require('./ClozeCard.js');
-var input = process.argv;
+var input = process.argv[2];
 var cardArray = [];
 var numberOfCards = 0;
+var i = 0;
+var msg;
+var validate;
 
+function cards(){
+if(cardArray[i].partial) {
+	msg = cardArray[i].partial;
+	validate = cardArray[i].cloze;
+}
+else if (cardArray[i].front){
+	msg = cardArray[i].front;
+	validate = cardArray[i].back;
+}
+else{
+	console.log("Trivia game over")
+}
+}
 //takes answers from terminal 
 
 // for (let i = 2; i < input.length; i++){
@@ -90,9 +106,8 @@ function basic(){
 
             ]).then(function(secondAnswers){
             	var newCard = new NewCard(secondAnswers.front, secondAnswers.back);
-            	console.log(newCard);
             	cardArray.push(newCard);
-            	console.log(cardArray);
+            	
             	createCards();
 				});
 				numberOfCards--;
@@ -117,10 +132,9 @@ function basic(){
             ]).then(function(clozeAnswers){
             	var clozeCard = new ClozeCard(clozeAnswers.front, clozeAnswers.back);
             	clozeCard.partial = clozeAnswers.front.replace(clozeAnswers.back, " ... ");
-            	console.log(clozeCard.partial);
-            	console.log(clozeCard);
+       
             	cardArray.push(clozeCard);
-            	console.log(cardArray);
+        
             	createCards();
 				});
 				numberOfCards--;
@@ -129,5 +143,30 @@ function basic(){
 	
 
 function trivia(){
-	console.log("triva begins")
+	if(i < cardArray.length){
+	cards();
+	inquirer.prompt([
+          {
+          	  type: 'input',
+              name: 'front',
+              message: msg,
+              validate: function(input){
+				if(input === validate){
+					console.log("\r\n You are right!");
+					return true
+				}
+				else{
+					console.log("\r\nSorry that is not the answer... Please try again.")
+					return false
+				}
+			}}
+          
+          
+
+            ]).then(function(secondAnswers){
+            	
+            	trivia();
+				});
+				i++;
+			}
 }
