@@ -143,6 +143,9 @@ function basic(){
 	
 
 function trivia(){
+	if(i === 0){
+		console.log("Your flash cards have been created and the triva game has begun.")
+	}
 	if(i < cardArray.length){
 	cards();
 	inquirer.prompt([
