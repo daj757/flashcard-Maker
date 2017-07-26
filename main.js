@@ -7,6 +7,7 @@ var numberOfCards = 0;
 var i = 0;
 var msg;
 var validate;
+var score = 0;
 
 function cards() {
     if (cardArray[i].partial) {
@@ -15,9 +16,38 @@ function cards() {
     } else if (cardArray[i].front) {
         msg = cardArray[i].front;
         validate = cardArray[i].back;
-    } else {
-        console.log("Trivia game over")
     }
+}
+
+function gameOver() {
+    inquirer.prompt([{
+            type: "input",
+            name: "end",
+            message: "You got " + score + " questions right.\n Would you like to play again? y/n",
+            validate: function(input) {
+                if (input === "y") {
+                    console.log("		New game has begun");
+                    i = 0;
+                    score = 0;
+                    return true;
+
+
+
+                } else if (input === "n") {
+
+                    process.exit();
+
+                } else {
+                    console.log("Invalid Input");
+                    return false;
+                }
+            }
+        }
+
+    ]).then(function(answers) {
+        trivia();
+
+    });
 }
 //takes answers from terminal 
 
@@ -45,7 +75,7 @@ var questions = function() {
         message: "How many flashcards would you like to create?",
         validate: function(input) {
             if (isNaN(input) === true) {
-                console.log("\r\n Please enter a number");
+                console.log("\r\n 		Please enter a number");
                 return false
             } else {
                 return true
@@ -77,10 +107,10 @@ function cardMaker() {
     }]).then(function(answers) {
         console.log(answers.cardChoice)
         if (answers.cardChoice === 'Basic Card') {
-            console.log('You chose to create a basic card.');
+            console.log('		You chose to create a basic card.');
             basic()
         } else if (answers.cardChoice === 'Cloze Card') {
-            console.log('You chose to create a close card.');
+            console.log('		You chose to create a close card.');
             cloze()
         }
     });
@@ -136,22 +166,28 @@ function cloze() {
 
 
 function trivia() {
+    if (i === cardArray.length) {
+        console.log("		Game over");
+        gameOver();
+    }
     if (i === 0) {
-        console.log("Your flash cards have been created and the triva game has begun.")
+        console.log("		The trivia game has begun.")
     }
     if (i < cardArray.length) {
         cards();
+        i++;
         inquirer.prompt([{
                 type: 'input',
                 name: 'front',
                 message: msg,
                 validate: function(input) {
                     if (input === validate) {
-                        console.log("\r\n You are right!");
+                        console.log("\r\n 		You are right!");
+                        score++
                         return true
                     } else {
-                        console.log("\r\nSorry that is not the answer... Please try again.")
-                        return false
+                        console.log("\r\n 		Sorry that is not the answer.")
+                        return true
                     }
                 }
             }
@@ -159,9 +195,8 @@ function trivia() {
 
 
         ]).then(function(secondAnswers) {
-
             trivia();
         });
-        i++;
+        
     }
 }
