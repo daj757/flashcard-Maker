@@ -197,6 +197,6 @@ function trivia() {
         ]).then(function(secondAnswers) {
             trivia();
         });
-        
+
     }
 }
